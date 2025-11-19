@@ -2,23 +2,25 @@ import { Funnel, Search } from "lucide-react";
 import { Input } from "./components/ui/input";
 import { Button } from "./components/ui/button";
 import {
-  Monitor,
   Pen,
-  MousePointerClick,
-  PenTool,
   Camera,
   Sparkles,
+  List,
+  Lightbulb,
+  Rocket,
+  Goal,
+  ChartNoAxesCombined,
 } from "lucide-react";
 
 function App() {
   const categories = [
     {
-      icon: Pen,
+      icon: List,
       label: "전체",
       isActive: true, // 라벨 색상 통제를 위한 속성
     },
     {
-      icon: Monitor,
+      icon: Lightbulb,
       label: "IT/프로그래밍",
       isActive: false,
     },
@@ -28,17 +30,17 @@ function App() {
       isActive: false,
     },
     {
-      icon: Pen,
+      icon: Rocket,
       label: "인문학",
       isActive: false,
     },
     {
-      icon: MousePointerClick,
+      icon: ChartNoAxesCombined,
       label: "마케팅",
       isActive: false,
     },
     {
-      icon: PenTool,
+      icon: Goal,
       label: "서비스ㆍ전략 기획",
       isActive: false,
     },
@@ -63,8 +65,8 @@ function App() {
     <div className="text-white">
       <main className=" min-h-[1000px] h-full w-full flex flex-col items-center gap-4 ">
         <div className="flex flex-col items-center text-2xl py-8">
-          <p>나의 학습 여정이,</p>
-          <p>나만의 창작으로 이어지는 플랫폼</p>
+          <p className="text-2xl font-bold">나의 학습 여정이,</p>
+          <p className="text-2xl font-bold">나만의 창작으로 이어지는 플랫폼</p>
         </div>
         <div className="flex border w-full max-w-128 justify-between p-2 items-center rounded-full gap-2">
           <div className="flex items-center justify-between gap-4">

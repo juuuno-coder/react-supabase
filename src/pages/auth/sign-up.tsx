@@ -1,3 +1,10 @@
+import React, { useState } from "react";
+import { NavLink, useNavigate } from "react-router";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
 import {
   Button,
   Card,
@@ -19,23 +26,23 @@ import {
   Form,
 } from "@/components/ui";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { NavLink, useNavigate } from "react-router";
-import { z } from "zod";
+import { Asterisk } from "lucide-react";
+import { Toaster, toast } from "sonner";
+import supabase from "@/utils/supabase";
 
 const formSchema = z.object({
-  email: z.email("올바른 형식의 이메일 주소를 입력해주세요."),
+  email: z.email({
+    error: "올바른 형식의 이메일 주소를 입력해주세요.",
+  }),
   password: z.string().min(8, {
-    message: "비밀번호는 최소한 8자 이상으로 작성해주세요.",
+    error: "비밀번호는 최소한 8자 이상으로 작성해주세요.",
   }),
   confirmpassword: z.string().min(8, {
-    message: "비밀번호는 최소한 8자 이상으로 작성해주세요.",
+    error: "비밀번호 확인을 입력해 주세요.",
   }),
 });
 
 function signUp() {
-  const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,9 +52,39 @@ function signUp() {
     },
   });
 
-  // 회원가입
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const navigate = useNavigate();
+  // 필수 동의항목 상태값 체크
+  const [serviceAgreed, setServiceAgreed] = useState<boolean>(true);
+  const [privacyAgreed, setPrivacyAgreed] = useState<boolean>(true);
+
+  // 일반 회원가입
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!serviceAgreed || !privacyAgreed) {
+      toast.warning("잠깐! 필수 동의가 아직 완료되지 않았어요!");
+      return;
+    }
+
+    try {
+      const { data, error: supabaseError } = await supabase.auth.signUp({
+        email: values.email,
+        password: values.password,
+      });
+
+      if (supabaseError) {
+        toast.error(supabaseError.message);
+        return;
+      }
+
+      // user와 session 두 값 모두 null이 아닐 경우에만 회원가입이 완료되었음을 의미
+      if (user && session) {
+        //회원가입 성공 시,
+        toast.success("회원가입이 완료되었습니다.");
+        navigate("/sign-in"); // =>로그인 페이지로 리디렉션
+      }
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   };
 
   return (
@@ -72,7 +109,10 @@ function signUp() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>이메일</FormLabel>
+                      <FormLabel>
+                        <Asterisk className="text-[#fa6859]" size={14} />
+                        이메일
+                      </FormLabel>
                       <div className="flex flex-1 gap-2">
                         <FormControl>
                           <Input
@@ -94,7 +134,10 @@ function signUp() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>비밀번호</FormLabel>
+                    <FormLabel>
+                      <Asterisk className="text-[#fa6859]" size={14} />
+                      비밀번호
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="password"
@@ -112,11 +155,14 @@ function signUp() {
                 name="confirmpassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>비밀번호 확인</FormLabel>
+                    <FormLabel>
+                      <Asterisk className="text-[#fa6859]" size={14} />
+                      비밀번호 확인
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="비밀번호를 입력하세요."
+                        placeholder="비밀번호를 한번 더 입력하세요."
                         required
                         {...field}
                       />
@@ -127,7 +173,10 @@ function signUp() {
               />
               <div className="grid gap-4">
                 <div className="flex items-center">
-                  <Label htmlFor="password">필수 동의항복</Label>
+                  <Label htmlFor="password">
+                    <Asterisk className="text-[#fa6859]" size={14} />
+                    필수 동의 항목
+                  </Label>
                 </div>
                 <div className="flex items-center gap-3">
                   <Checkbox id="terms" />
@@ -151,7 +200,7 @@ function signUp() {
                 </div>
                 <Separator></Separator>
                 <div className="flex items-center">
-                  <Label htmlFor="password">선택 동의항복</Label>
+                  <Label htmlFor="password">선택 동의 항목</Label>
                 </div>
                 <div className="flex items-center gap-3 ">
                   <Checkbox id="terms3" />
@@ -164,7 +213,7 @@ function signUp() {
                   </a>
                 </div>
               </div>
-              <div className="flex flex-1  gap-2">
+              <div className="flex  gap-2">
                 <Button
                   className="w-9 border"
                   onClick={() => navigate("/sign-In")}
@@ -173,7 +222,7 @@ function signUp() {
                 </Button>
                 <Button
                   type="submit"
-                  className="w-77 bg-green-800/50 disabled:opactiy-50 border text-white"
+                  className="flex-1 bg-green-800/50 disabled:opactiy-50 border text-white "
                 >
                   회원가입
                 </Button>

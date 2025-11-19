@@ -1,6 +1,7 @@
 import { AppFooter, AppHeader } from "@/components/common";
 import { Outlet } from "react-router";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 function Rootlayout() {
   return (
@@ -14,6 +15,7 @@ function Rootlayout() {
         </main>
 
         <AppFooter />
+        <Toaster position="top-center" richColors />
       </div>
     </ThemeProvider>
   );

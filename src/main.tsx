@@ -9,6 +9,8 @@ import SignIn from "./pages/auth/sign-in.tsx"; // 회원가입 페이지
 import CreateTopic from "./pages/topic/create-topic.tsx"; // 토픽 작성 페이지
 import DetailTopic from "./pages/topic/detail-topic.tsx"; // 토픽 조회 페이지
 import UpdateTopic from "./pages/topic/update-topic.tsx"; // 토픽 수정 페이지
+
+import InsightTopic from "./pages/topic/insight-topic.tsx"; // 토픽 메인 페이지
 import Rootlayout from "./pages/layout.tsx";
 
 createRoot(document.getElementById("root")!).render(
@@ -22,6 +24,7 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/sign-in" element={<SignIn />} />
           {/* TOPIC */}
           <Route path="/create-topic" element={<CreateTopic />} />
+          <Route path="/insight-topic" element={<InsightTopic />} />
           <Route path="/topic/:id" element={<DetailTopic />} />
           <Route path="/topic/:id/edit" element={<UpdateTopic />} />
         </Route>

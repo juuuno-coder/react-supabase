@@ -1,5 +1,5 @@
-function CreateTopic() {
+function createTopic() {
   return <div>create-topic</div>;
 }
 
-export default CreateTopic;
+export default createTopic;
