@@ -186,19 +186,11 @@ function App() {
               토픽을 작성해보세요.
             </p>
           </div>
-          {topics.length === 0 ? (
-            <div className="w-full flex-1 flex-col items-center justify-center">
-              <p className="text-neutal-500/50">
-                조회 가능한 데이터가 없습니다.
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 gap-6">
-              {topics.map((topic) => (
-                <NewTopic props={topic} />
-              ))}
-            </div>
-          )}
+          <div className="grid grid-cols-2 gap-6">
+            {topics.map((topic) => (
+              <NewTopic props={topic} />
+            ))}
+          </div>
         </section>
       </div>
       <Button

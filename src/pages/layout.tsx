@@ -1,19 +1,17 @@
-import { AppFooter, AppHeader } from "@/components/common";
 import { Outlet } from "react-router";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AppFooter, AppHeader } from "@/components/common";
 import { Toaster } from "@/components/ui/sonner";
 
-function Rootlayout() {
+function RootLayout() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <div className="w-full h-screnn flex-1 ">
+      <div className="w-full h-screen flex flex-col">
         <AppHeader />
-        <main className="w-full flex-1 flex justify-center">
-          <div className="w-full max-w-[1328px] h-full flex justify-center ">
-            <Outlet />
-          </div>
+        {/* 페이지별 콘텐츠 영역 */}
+        <main className="w-full flex-1 flex justify-center mt-12">
+          <Outlet />
         </main>
-
         <AppFooter />
         <Toaster position="top-center" richColors />
       </div>
@@ -21,4 +19,4 @@ function Rootlayout() {
   );
 }
 
-export default Rootlayout;
+export default RootLayout;
